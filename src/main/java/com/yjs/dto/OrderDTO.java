@@ -1,6 +1,9 @@
 package com.yjs.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.yjs.dataobject.OrderDetail;
+import com.yjs.utils.serializer.Date2StrSerializer;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -9,6 +12,7 @@ import java.util.List;
 
 
 @Data
+//@JsonInclude(JsonInclude.Include.NON_NULL)
 public class OrderDTO {
 
     private String orderId;
@@ -40,7 +44,11 @@ public class OrderDTO {
      * 支付状态
      */
     private Integer payStatus;
+
+    @JsonSerialize(using = Date2StrSerializer.class)
     private Date createTime;
+
+    @JsonSerialize(using = Date2StrSerializer.class)
     private Date updateTime;
 
     private List<OrderDetail> orderDetailList;

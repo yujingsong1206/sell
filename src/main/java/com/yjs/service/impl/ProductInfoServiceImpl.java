@@ -7,6 +7,7 @@ import com.yjs.enums.ResultEnum;
 import com.yjs.exception.SellException;
 import com.yjs.repository.ProductInfoRepository;
 import com.yjs.service.ProductInfoService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,10 +17,9 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 import java.util.Optional;
 
-/**
- * Created by sjyjs on 2018/12/27.
- */
+
 @Service
+@Slf4j
 public class ProductInfoServiceImpl implements ProductInfoService {
 
     @Autowired
@@ -27,10 +27,11 @@ public class ProductInfoServiceImpl implements ProductInfoService {
 
     @Override
     public ProductInfo findById(String productId) {
-//        Optional o = productInfoRepository.findById(productId);
-//        if(!o.isPresent()){
-//            System.out.println("null");
-//        }
+        Optional optional = productInfoRepository.findById(productId);
+        if(!optional.isPresent()){
+            log.error("【查找商品】不存在，productId={}", productId);
+            throw new SellException(ResultEnum.PRODUCT_NOT_EXIST);
+        }
         return productInfoRepository.findById(productId).get();
     }
 

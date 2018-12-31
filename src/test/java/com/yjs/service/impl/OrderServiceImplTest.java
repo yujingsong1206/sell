@@ -53,7 +53,7 @@ public class OrderServiceImplTest {
 
     @Test
     public void findById() throws Exception {
-        OrderDTO orderDTO = orderService.findById("1546047449515455296");
+        OrderDTO orderDTO = orderService.findById("1546047449515455296","6666666616");
         log.info("【查询单个订单】 result={}", orderDTO);
     }
 
@@ -68,20 +68,20 @@ public class OrderServiceImplTest {
 
     @Test
     public void cancel() throws Exception {
-        OrderDTO orderDTO = orderService.findById("1546047449515455296");
-        orderService.cancel(orderDTO);
+//        OrderDTO orderDTO = orderService.findById("1546047449515455296");
+//        orderService.cancel(orderDTO);
     }
 
     @Test
     public void finish() throws Exception {
-        OrderDTO orderDTO = orderService.findById("1546047181552371314");
-        orderService.finish(orderDTO);
+//        OrderDTO orderDTO = orderService.findById("1546047181552371314");
+//        orderService.finish(orderDTO);
     }
 
     @Test
     public void paid() throws Exception {
-        OrderDTO orderDTO = orderService.findById("1546047181552371314");
-        orderService.paid(orderDTO);
+//        OrderDTO orderDTO = orderService.findById("1546047181552371314");
+//        orderService.paid(orderDTO);
     }
 
 }

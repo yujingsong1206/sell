@@ -24,6 +24,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
+import org.springframework.util.StringUtils;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
@@ -54,15 +55,12 @@ public class OrderServiceImpl implements OrderService {
 
         for (OrderDetail orderDetail : orderDTO.getOrderDetailList()){
             ProductInfo productInfo = productInfoService.findById(orderDetail.getProductId());
-            if(productInfo == null){
-                throw new SellException(ResultEnum.PRODUCT_NOT_EXIST);
-            }
-            orderDetail.setProductName(productInfo.getProductName());
+            BeanUtils.copyProperties(productInfo, orderDetail);
             orderDetail.setOrderId(orderId);
-            orderDetail.setProductPrice(productInfo.getProductPrice());
-            orderDetail.setProductIcon(productInfo.getProductIcon());
             orderAmount = productInfo.getProductPrice().multiply(new BigDecimal(orderDetail.getProductQuantity())).add(orderAmount);
             orderDetail.setDetailId(KeyUtil.genUniqueKey());
+            orderDetail.setCreateTime(null);
+            orderDetail.setUpdateTime(null);
             orderDetailRepository.save(orderDetail);
 
 //            CartDTO cartDTO = new CartDTO();
@@ -71,13 +69,18 @@ public class OrderServiceImpl implements OrderService {
 //            cartDTOList.add(cartDTO);
         }
 
+        orderDTO.setOrderId(orderId);
+        orderDTO.setOrderAmount(orderAmount);
+        orderDTO.setOrderStatus(OrderStatusEnum.NEW.getCode());
+        orderDTO.setPayStatus(PayStatusEnum.NOPAY.getCode());
         OrderMaster orderMaster = new OrderMaster();
-        orderMaster.setOrderId(orderId);
-        orderMaster.setOrderAmount(orderAmount);
-        orderMaster.setBuyerOpenid(orderDTO.getBuyerOpenid());
-        orderMaster.setBuyerAddress(orderDTO.getBuyerAddress());
-        orderMaster.setBuyerPhone(orderDTO.getBuyerPhone());
-        orderMaster.setBuyerName(orderDTO.getBuyerName());
+        BeanUtils.copyProperties(orderDTO, orderMaster);
+//        orderMaster.setOrderId(orderId);
+//        orderMaster.setOrderAmount(orderAmount);
+//        orderMaster.setBuyerOpenid(orderDTO.getBuyerOpenid());
+//        orderMaster.setBuyerAddress(orderDTO.getBuyerAddress());
+//        orderMaster.setBuyerPhone(orderDTO.getBuyerPhone());
+//        orderMaster.setBuyerName(orderDTO.getBuyerName());
         orderMasterRepository.save(orderMaster);
 
 
@@ -89,12 +92,17 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public OrderDTO findById(String orderId) {
-        Optional optional = orderMasterRepository.findById(orderId);
-        if(!optional.isPresent()){
+    public OrderDTO findById(String orderId, String openid) {
+//        Optional optional = orderMasterRepository.findById(orderId);
+//        if(!optional.isPresent()){
+//            throw new SellException(ResultEnum.ORDER_NOT_EXIST);
+//        }
+//        OrderMaster orderMaster = (OrderMaster) optional.get();
+        OrderMaster orderMaster = orderMasterRepository.findByOrderIdAndBuyerOpenid(orderId, openid);
+        if(orderMaster == null){
+            log.error("【订单查询】不存在，orderId={}，openid={}", orderId, openid);
             throw new SellException(ResultEnum.ORDER_NOT_EXIST);
         }
-        OrderMaster orderMaster = (OrderMaster) optional.get();
         List<OrderDetail> orderDetailList = orderDetailRepository.findByOrderId(orderId);
         if(CollectionUtils.isEmpty(orderDetailList)){
             throw new SellException(ResultEnum.ORDERDETAIL_NOT_EXIST);

@@ -1,5 +1,7 @@
 package com.yjs.dataobject;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.yjs.utils.serializer.Date2StrSerializer;
 import lombok.Data;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -36,6 +38,10 @@ public class OrderDetail {
      * 商品小图
      */
     private String productIcon;
+
+    @JsonSerialize(using = Date2StrSerializer.class)
     private Date createTime;
+
+    @JsonSerialize(using = Date2StrSerializer.class)
     private Date updateTime;
 }

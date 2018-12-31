@@ -8,6 +8,7 @@ import com.yjs.dataobject.ProductInfo;
 import com.yjs.service.ProductCategoryService;
 import com.yjs.service.ProductInfoService;
 import com.yjs.utils.ResultVOUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,6 +24,7 @@ import java.util.stream.Collectors;
  */
 @RestController
 @RequestMapping("/buyer/product")
+@Slf4j
 public class BuyerProductController {
 
     @Autowired
