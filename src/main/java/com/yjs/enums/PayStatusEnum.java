@@ -7,7 +7,7 @@ import lombok.Getter;
  * 支付状态
  */
 @Getter
-public enum PayStatusEnum {
+public enum PayStatusEnum implements CodeEnum {
 
     NOPAY(0, "未支付"),
     PAY(1, "已支付"),
@@ -19,15 +19,6 @@ public enum PayStatusEnum {
     PayStatusEnum(Integer code, String msg) {
         this.code = code;
         this.msg = msg;
-    }
-
-    public static PayStatusEnum codeOf(Integer code){
-        for (PayStatusEnum payStatusEnum : values()){
-            if(payStatusEnum.getCode() == code){
-                return payStatusEnum;
-            }
-        }
-        throw new SellException(ResultEnum.ENUM_CODE_NOT_EXIST);
     }
 
 }

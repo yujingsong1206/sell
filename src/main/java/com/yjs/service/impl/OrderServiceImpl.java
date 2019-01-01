@@ -14,6 +14,7 @@ import com.yjs.repository.OrderDetailRepository;
 import com.yjs.repository.OrderMasterRepository;
 import com.yjs.service.OrderService;
 import com.yjs.service.ProductInfoService;
+import com.yjs.utils.EnumUtil;
 import com.yjs.utils.KeyUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -114,6 +115,27 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public OrderDTO findById(String orderId) {
+        Optional optional = orderMasterRepository.findById(orderId);
+        if(!optional.isPresent()){
+            throw new SellException(ResultEnum.ORDER_NOT_EXIST);
+        }
+        OrderMaster orderMaster = (OrderMaster) optional.get();
+        if(orderMaster == null){
+            log.error("【订单查询】不存在，orderId={}", orderId);
+            throw new SellException(ResultEnum.ORDER_NOT_EXIST);
+        }
+        List<OrderDetail> orderDetailList = orderDetailRepository.findByOrderId(orderId);
+        if(CollectionUtils.isEmpty(orderDetailList)){
+            throw new SellException(ResultEnum.ORDERDETAIL_NOT_EXIST);
+        }
+        OrderDTO orderDTO = new OrderDTO();
+        BeanUtils.copyProperties(orderMaster, orderDTO);
+        orderDTO.setOrderDetailList(orderDetailList);
+        return orderDTO;
+    }
+
+    @Override
     public Page<OrderDTO> findList(String buyerOpenid, Pageable pageable) {
         Page<OrderMaster> orderMasterPage = orderMasterRepository.findByBuyerOpenid(buyerOpenid, pageable);
         List<OrderDTO> orderDTOList = OrderMaster2OrderDTOConverter.convert(orderMasterPage.getContent());
@@ -154,8 +176,12 @@ public class OrderServiceImpl implements OrderService {
     @Transactional
     public OrderDTO finish(OrderDTO orderDTO) {
         if(orderDTO.getOrderStatus() != OrderStatusEnum.NEW.getCode()){
-            log.error("【完结订单】订单状态不正确，orderId={}，orderStatus={}", orderDTO.getOrderId(), orderDTO.getOrderStatus());
+            log.error("【完结订单】订单状态不正确，orderId={}，orderStatus={}({})", orderDTO.getOrderId(), orderDTO.getOrderStatus(), orderDTO.getOrderStatusEnum().getMsg());
             throw new SellException(ResultEnum.ORDER_STATUS_ERROR);
+        }
+        if(orderDTO.getPayStatus() != PayStatusEnum.PAY.getCode()){
+            log.error("【完结订单】订单支付状态不正确，orderId={}，payStatus={}({})", orderDTO.getOrderId(), orderDTO.getPayStatus(), orderDTO.getPayStatusEnum().getMsg());
+            throw new SellException(ResultEnum.ORDER_PAY_STATUS_ERROR);
         }
 
         orderDTO.setOrderStatus(OrderStatusEnum.FINISHED.getCode());
@@ -176,7 +202,8 @@ public class OrderServiceImpl implements OrderService {
         }
 
         if(orderDTO.getPayStatus() != PayStatusEnum.NOPAY.getCode()){
-            log.error("【订单支付成功】订单支付状态不正确，orderStatus={}({})", orderDTO.getPayStatus(), PayStatusEnum.codeOf(orderDTO.getPayStatus()).getMsg());
+            log.error("【订单支付成功】订单支付状态不正确，orderStatus={}({})", orderDTO.getPayStatus(),
+                    EnumUtil.getByCode(orderDTO.getPayStatus(), PayStatusEnum.class).getMsg());
             throw new SellException(ResultEnum.ORDER_PAY_STATUS_ERROR);
         }
 
@@ -186,5 +213,13 @@ public class OrderServiceImpl implements OrderService {
         orderMasterRepository.save(orderMaster);
 
         return orderDTO;
+    }
+
+    @Override
+    public Page<OrderDTO> findList(Pageable pageable) {
+        Page<OrderMaster> orderMasterPage = orderMasterRepository.findAll(pageable);
+        List<OrderDTO> orderDTOList = OrderMaster2OrderDTOConverter.convert(orderMasterPage.getContent());
+        Page<OrderDTO> orderDTOPage = new PageImpl<OrderDTO>(orderDTOList, pageable, orderMasterPage.getTotalElements());
+        return orderDTOPage;
     }
 }
