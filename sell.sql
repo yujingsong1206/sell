@@ -50,3 +50,12 @@ create table `order_detail` (
 	primary key (`detail_id`),
 	key `idx_order_id` (`order_id`)
 ) comment '订单详情表';
+
+create table `user`(
+  `user_id` varchar(32) not null,
+  `username` varchar(32) not null comment '用户名',
+  `password` varchar(32) not null comment '密码',
+  `create_time` timestamp not null default current_timestamp comment '创建时间',
+	`update_time` timestamp not null default current_timestamp on update current_timestamp comment '更新时间',
+	primary key (`user_id`)
+) comment '用户表';

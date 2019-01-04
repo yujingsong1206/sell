@@ -2,17 +2,13 @@ package com.yjs.enums;
 
 import lombok.Getter;
 
-/**
- * Created by sjyjs on 2018/12/28.
- */
+
 @Getter
 public enum ResultEnum {
 
     SUCCESS(0, "成功"),
-
     PARAM_ERROR(1, "参数不正确"),
     ENUM_CODE_NOT_EXIST(2, "枚举不存在"),
-
     PRODUCT_NOT_EXIST(10, "商品不存在"),
     PRODUCT_STOCK_ERROR(11, "库存不正确 "),
     ORDER_NOT_EXIST(12, "订单不存在"),
@@ -21,10 +17,13 @@ public enum ResultEnum {
     ORDER_UPDATE_FAIL(15, "订单更新失败"),
     ORDER_DETAIL_EMPTY(16, "订单详情为空"),
     ORDER_PAY_STATUS_ERROR(17, "订单支付状态不正确"),
-    ORDER_CANCEL_ERROR(18, "订单取消成功"),
-    ORDER_FINISH_ERROR(19, "订单完结成功"),
-
     CART_EMPTY(18, "购物车为空"),
+    ORDER_CANCEL_ERROR(19, "订单取消成功"),
+    ORDER_FINISH_ERROR(20, "订单完结成功"),
+    PRODUCT_STATUS_ERROR(21, "商品状态不正确"),
+    LOGIN_FAIL(22, "登录失败，用户名或密码不正确"),
+    UN_PW_NO_EMPTY(23, "用户名或密码不能为空"),
+    LOGOUT_SUCCESS(24, "退出登录成功"),
     ;
 
     private Integer code;

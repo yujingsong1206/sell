@@ -2,11 +2,13 @@ package com.yjs.VO;
 
 import lombok.Data;
 
-/**
- * Created by sjyjs on 2018/12/27.
- */
+import java.io.Serializable;
+
+
 @Data
-public class ResultVO<T> {
+public class ResultVO<T> implements Serializable {
+
+    private static final long serialVersionUID = 4465219625046762037L;
 
     private Integer code;
 

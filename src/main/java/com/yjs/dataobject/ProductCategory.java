@@ -12,7 +12,6 @@ import java.util.Date;
 
 /**
  * 类目
- * Created by sjyjs on 2018/12/25.
  * product_category
  */
 //@Table(name = "product_category")

@@ -1,10 +1,9 @@
 package com.yjs.exception;
 
 import com.yjs.enums.ResultEnum;
+import lombok.Getter;
 
-/**
- * Created by sjyjs on 2018/12/28.
- */
+@Getter
 public class SellException extends RuntimeException {
 
     private Integer code;

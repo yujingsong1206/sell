@@ -53,7 +53,7 @@ public class OrderServiceImplTest {
 
     @Test
     public void findById() throws Exception {
-        OrderDTO orderDTO = orderService.findById("1546047449515455296","6666666616");
+        OrderDTO orderDTO = orderService.findById("1546047449515455296","666666");
         log.info("【查询单个订单】 result={}", orderDTO);
     }
 

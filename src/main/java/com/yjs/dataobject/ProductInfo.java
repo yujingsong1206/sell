@@ -1,5 +1,8 @@
 package com.yjs.dataobject;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.yjs.enums.ProductStatusEnum;
+import com.yjs.utils.EnumUtil;
 import lombok.Data;
 import org.hibernate.annotations.DynamicUpdate;
 
@@ -8,9 +11,7 @@ import javax.persistence.Id;
 import java.math.BigDecimal;
 import java.util.Date;
 
-/**
- * Created by sjyjs on 2018/12/27.
- */
+
 @Entity
 @DynamicUpdate
 @Data
@@ -28,11 +29,16 @@ public class ProductInfo {
     private String productDescription;
     /** 小图 */
     private String productIcon;
-    /** 状态 0 正常 1下架 */
+    /** 状态 0在架 1下架 */
     private Integer productStatus;
     /** 类目编号 */
     private Integer categoryType;
     private Date createTime;
     private Date updateTime;
+
+    @JsonIgnore
+    public ProductStatusEnum getProductStatusEnum(){
+        return EnumUtil.getByCode(productStatus, ProductStatusEnum.class);
+    }
 
 }
