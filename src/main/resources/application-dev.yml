@@ -11,15 +11,21 @@ spring:
   redis:
     host: 127.0.0.1
     port: 6379
+  servlet:
+    multipart:
+      max-file-size: 1MB
 server:
   servlet:
     context-path: /sell
 
-
-projecturl:
-  sell: http://127.0.0.1:8080
-
-
 logging:
   level:
     com.yjs.dataobject.mapper: trace
+
+
+#自定义常量
+projecturl:
+  sell: http://127.0.0.1:8080
+
+fileurl:
+  prefix: http://image.yjs.com/

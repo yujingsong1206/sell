@@ -1,7 +1,14 @@
 package com.yjs.config;
 
-/**
- * Created by sjyjs on 2019/1/5.
- */
-public class FIleUrlConfig {
+import lombok.Data;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.stereotype.Component;
+
+@Data
+@Component
+@ConfigurationProperties(prefix = "fileurl")
+public class FileUrlConfig {
+
+    public String prefix;
+
 }
