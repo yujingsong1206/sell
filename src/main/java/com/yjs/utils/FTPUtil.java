@@ -17,9 +17,9 @@ public class FTPUtil {
     private static final Logger logger = LoggerFactory.getLogger(FTPUtil.class);
 
     private static String ftpIp = "127.0.0.1";
-    private static String ftpUser = "song";
-    private static String ftpPass = "120611";
-    private static String path = "img";
+    private static String ftpUser = "ftpuser";//anonymous 匿名用户
+    private static String ftpPass = "123456";
+    private static String path = "/pub";
 
     public FTPUtil(String ip, int port, String user, String pwd) {
         this.ip = ip;
@@ -51,7 +51,7 @@ public class FTPUtil {
         boolean uploaded = true;
         FileInputStream fis = null;
         //连接FTP服务器
-        if(connectServer(this.ip, this.port, this.user, this.pwd)); {
+        if(connectServer(this.ip, this.port, this.user, this.pwd)) {
             //改变工作空间目录
             try {
                 ftpClient.changeWorkingDirectory(remotePath);
