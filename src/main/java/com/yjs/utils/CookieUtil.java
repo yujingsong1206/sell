@@ -15,7 +15,7 @@ public class CookieUtil {
     private static final Logger logger = LoggerFactory.getLogger(CookieUtil.class);
 
 //    private final static String COOKIE_DOMAIN = ".yjs.com";
-    private final static String COOKIE_NAME = "mall_login_token";
+    private final static String COOKIE_NAME = "login_token";
 
     public static void writeLoginToken(HttpServletResponse response, String token){
         Cookie ck = new Cookie(COOKIE_NAME, token);

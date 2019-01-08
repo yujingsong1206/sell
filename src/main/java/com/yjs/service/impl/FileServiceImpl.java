@@ -46,8 +46,8 @@ public class FileServiceImpl implements FileService {
 
             //判断是否需要压缩
             if(StringUtils.equals("true", isCompress)){
-                String compressPath = path + "\\" + uploadFileNameCompress;//压缩后文件
-                String compressPathBefore = path + "\\" + uploadFileName;//压缩原文件
+                String compressPath = path + "/" + uploadFileNameCompress;//压缩后文件
+                String compressPathBefore = path + "/" + uploadFileName;//压缩原文件
                 if(!StringUtils.isEmpty(width) && !StringUtils.isEmpty(height)){
                     ImgCompressUtil.compress(compressPathBefore,Integer.valueOf(width),Integer.valueOf(height),compressPath);
                 } else {

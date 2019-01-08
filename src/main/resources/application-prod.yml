@@ -5,7 +5,7 @@ spring:
     password: 123456
     url: jdbc:mysql://127.0.0.1:3306/sell?characterEncoding=utf-8&useSSL=false&serverTimezone=GMT%2B8
   jpa:
-    show-sql: true
+    show-sql: false
   jackson:
     default-property-inclusion: non_null
   redis:
@@ -25,7 +25,7 @@ logging:
 
 #自定义常量
 projecturl:
-  sell: http://127.0.0.1:8080
+  sell: http://47.107.140.163:8080
 
 fileurl:
   prefix: http://47.107.140.163/

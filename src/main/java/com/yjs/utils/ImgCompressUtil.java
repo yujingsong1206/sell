@@ -5,10 +5,12 @@ import java.awt.*;
 import java.awt.image.*;
 import javax.imageio.ImageIO;
 import com.sun.image.codec.jpeg.*;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 图片压缩
  */
+@Slf4j
 public class ImgCompressUtil {
 
     private Image img;
@@ -17,6 +19,7 @@ public class ImgCompressUtil {
     private String targetPath;
 
     public static void compress(String sourcePath, Integer width , Integer height, String targetPath) throws IOException {
+        log.info("原文件 sourcePath:{}", sourcePath);
         ImgCompressUtil imgCom = new ImgCompressUtil(sourcePath, targetPath);
         imgCom.resizeFix(width, height);
     }

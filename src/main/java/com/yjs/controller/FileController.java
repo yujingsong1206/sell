@@ -4,7 +4,9 @@ import com.yjs.VO.ResultVO;
 import com.yjs.config.FileUrlConfig;
 import com.yjs.service.FileService;
 import com.yjs.utils.ResultVOUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
@@ -15,6 +17,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/file")
+@Slf4j
 public class FileController {
 
     @Autowired
@@ -46,7 +49,9 @@ public class FileController {
         if(file.isEmpty()){
             return ResultVOUtil.error(60, "文件为空");
         }
+        log.info("进入文件上传");
         String path = request.getSession().getServletContext().getRealPath("upload");
+        log.info("获取path={}", path);
         String targetFileName = fileService.upload(file, path, width, height, isCompress);
         String[] fileName = targetFileName.split(",");
         fileMap.put("url", fileUrlConfig.getPrefix() + fileName[0]);

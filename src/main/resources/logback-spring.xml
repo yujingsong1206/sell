@@ -25,6 +25,7 @@
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!--路径-->
             <fileNamePattern>C:\apache-tomcat-8.0.32\sell\info.%d.log</fileNamePattern>
+            <!--<fileNamePattern>/data/log/sell/info.%d.log</fileNamePattern>-->
         </rollingPolicy>
     </appender>
 
@@ -41,6 +42,7 @@
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
             <!--路径-->
             <fileNamePattern>C:\apache-tomcat-8.0.32\sell\error.%d.log</fileNamePattern>
+            <!--<fileNamePattern>/data/log/sell/error.%d.log</fileNamePattern>-->
         </rollingPolicy>
     </appender>
 
